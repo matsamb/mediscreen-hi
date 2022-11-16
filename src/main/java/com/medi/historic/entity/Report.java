@@ -28,21 +28,23 @@ public class Report {
 	private String id;//string of user Id for instance
 	//@Transient
 	private Integer patientId;
-	private String family;
-	private String given;
+	//private String family;
+	//private String given;
+	//private LocalDate dob;
 	//S@Field("datetime")
 	private Date date;
 	private DiabeteStatusEnum diabeteStatus;
 	private String comment;
 	
+
+	public Report(String string) {		
+		this.comment = "Not_Registered";
+	}
+	
 	@Override
 	public String toString() {
-		return String.format("Report[id=%s, patientId='%s', family='%s', given='%s', issueDate='%s', diabeteStatus='%s', comment='%s']",
-		        id, patientId, family, given, date, diabeteStatus, comment);
-	}
-
-	public Report(String string) {
-		this.family = "Not_Registered";
+		return String.format("Report[id=%s, patientId='%s', issueDate='%s', diabeteStatus='%s', comment='%s']",
+		        id, patientId,/* family, given,*/ date, diabeteStatus, comment);
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.medi.historic.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,26 +17,41 @@ public class ReportService {
 
 	@Autowired
 	private ReportRepository reportRepository;
-	
-	ReportService(ReportRepository reportRepository){
+
+	ReportService(ReportRepository reportRepository) {
 		this.reportRepository = reportRepository;
 	}
 
-	public List<Report> findReportByFamilyAndGiven(String family, String given) {
-		log.info("findReportByFamilyAndGiven");
-		if(reportRepository.findByFamilyAndGiven(family, given).size()>0) {
-		return reportRepository.findByFamilyAndGiven(family, given);
-		}else {
-			return List.of(new Report("Not_Registered")); 
+	public List<Report> findReportByPatientId(Integer patientId) {
+		log.info("findReportByPatientId");
+		List<Report> idReportList = new ArrayList<>();
+		if (reportRepository.findByPatientId(patientId).size() > 0) {
+			idReportList.add(new Report("Not_Registered"));
+			for (Report r : reportRepository.findByPatientId(patientId)) {
+				log.info(r+"r Id - patientId"+patientId);
+				if (r.getPatientId().equals(patientId)) {
+					log.info("if for equality");
+					idReportList.add(r);
+				}
+			}
+			if(idReportList.size() > 1) {
+				idReportList.remove(0);
+				return idReportList;
+			}
+			
+			return idReportList;
+		} else {
+			idReportList.add(new Report("Not_Registered"));
+			return idReportList;
 		}
 	}
 
 	public String saveReport(Report newreport) {
 		log.info("saveReport");
 		reportRepository.save(newreport);
-		log.info(reportRepository.findByFamilyAndGiven(newreport.getFamily(), newreport.getGiven()).size());
-		for(Report r : reportRepository.findByFamilyAndGiven(newreport.getFamily(), newreport.getGiven())){
-			if(r.getDate() == newreport.getDate()) {
+		log.info(reportRepository.findByPatientId(newreport.getPatientId()).size());
+		for (Report r : reportRepository.findByPatientId(newreport.getPatientId())) {
+			if (r.getDate() == newreport.getDate()) {
 				return r.getId();
 			}
 		}
@@ -47,6 +63,9 @@ public class ReportService {
 		reportRepository.delete(report);
 	}
 
-	
-	
+	public void deleteAll(List<Report> reports) {
+		log.info("deleteAllReport");
+		reportRepository.deleteAll(reports);		
+	}
+
 }
