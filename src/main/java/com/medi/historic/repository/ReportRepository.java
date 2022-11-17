@@ -18,10 +18,10 @@ import com.medi.historic.entity.Report;
 public interface ReportRepository extends MongoRepository<Report, ObjectId>{
 
 	@Query(value= "{}",fields= "{_id:1,patientId:1,date:1,diabeteStatus:1,comment:1}", sort = "{date:-1}")
-	public List<Report> findByPatientId(Integer patientId);
+	public List<Report> findByPatientId(Integer Id);
 	
-	@Query(value= "{}",fields= "{_id:1,patientId:1,date:1,diabeteStatus:1,comment:1}", sort = "{date:-1}")
-	public List<Report> findByPatientId(Integer patientId, Pageable pageable);
+//	@Query(value= "{}",fields= "{_id:1,patientId:1,date:1,diabeteStatus:1,comment:1}", sort = "{date:-1}")
+//	public List<Report> findByPatientId(Integer patientId, Pageable pageable);
 	
 //	@Query(value= "{}",fields= "{family:1,given:1}", sort = "{date:-1}")
 //	public List<Report> findByFamily();

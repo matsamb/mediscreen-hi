@@ -165,7 +165,7 @@ public class ReportRestcontroller {
 			} else {
 
 				for (Report r : reportService.findReportByPatientId(patientId)) {
-					if (r.getId().contentEquals(report.getId()) && r.getDate() == report.getDate()) {
+					if (r.getId().toLowerCase().contentEquals(report.getId().toLowerCase()) && r.getDate() == report.getDate()) {
 						log.info("Deleting patient " + patientId + " report " + report.getId());
 						reportService.deleteReport(report);
 						return ResponseEntity.noContent().build();
