@@ -111,9 +111,9 @@ public class ReportRestcontroller {
 			log.info("No request body");
 			return ResponseEntity.badRequest().build();
 		} else {
-			log.info("Creating new report");
+			log.info("Updating report");
 			Report newReport = report.get();
-
+			log.info("Updating report "+ newReport);
 			// Validator validator =
 			// Validation.buildDefaultValidatorFactory().getValidator();
 			// Set<ConstraintViolation<Patient>> violations =
@@ -125,15 +125,19 @@ public class ReportRestcontroller {
 			// } else {
 
 			// TODO transfert ID initialisation to user interface
-			if (reportService.findReportByPatientId(patientId).get(0).getComment() == "Not_Registered") {
-				log.info("Report " + newReport.getId() + " not registered");
-				return ResponseEntity.notFound().build();
-			} else {
+		//	if (reportService.findReportByPatientId(patientId).get(0).getComment() == "Not_Registered") {
+		//		log.info("Report " + newReport.getId() + " not registered");
+		//		return ResponseEntity.notFound().build();
+		//	} else {
 				log.info("Report " + newReport.getId() + ", for patient number " + newReport.getPatientId()
 						+ ", updated");
+				Date issueNow = new Date();
+				LocalDate dob = LocalDate.of(2009, 9, 19);
+				issueNow.setTime(System.currentTimeMillis());
+				newReport.setDate(issueNow);
 				reportService.saveReport(newReport);
 				return ResponseEntity.ok(newReport);
-			}
+		//	}
 			// }
 		}
 		// }

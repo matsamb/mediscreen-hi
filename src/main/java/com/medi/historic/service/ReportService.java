@@ -29,9 +29,9 @@ public class ReportService {
 		if (reportRepository.findByPatientId(patientId).size() > 0) {
 			idReportList.add(new Report("Not_Registered"));
 			for (Report r : reportRepository.findByPatientId(patientId)) {
-				log.info(r+"r Id - patientId"+patientId);
+				log.debug(r+"r Id - patientId"+patientId);
 				if (r.getPatientId().equals(patientId)) {
-					log.info("if for equality");
+					log.debug("if for equality");
 					idReportList.add(r);
 				}
 			}
@@ -53,6 +53,7 @@ public class ReportService {
 		log.info(reportRepository.findByPatientId(newreport.getPatientId()).size());
 		for (Report r : reportRepository.findByPatientId(newreport.getPatientId())) {
 			if (r.getDate() == newreport.getDate()) {
+				log.info(r+" "+newreport);
 				return r.getId();
 			}
 		}
