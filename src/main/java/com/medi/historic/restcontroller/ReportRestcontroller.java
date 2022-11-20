@@ -30,6 +30,8 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ReportRestcontroller {
 
+	String key = "bearer";
+	
 	@Autowired
 	private ReportService reportService;
 
@@ -41,7 +43,7 @@ public class ReportRestcontroller {
 	@GetMapping("/report")
 	public ResponseEntity<List<Report>> findReport(@RequestParam Integer patientId,
 			@RequestHeader String authentication) {
-		if (authentication.contentEquals("bearer")) {
+		if (authentication.contentEquals(key)) {
 			if (reportService.findReportByPatientId(patientId).get(0).getComment() == "Not_Registered") {
 				log.info("No registered report for patient number" + patientId);
 				return ResponseEntity.notFound().build();
@@ -59,7 +61,7 @@ public class ReportRestcontroller {
 	@PostMapping("/report/add")
 	public ResponseEntity<Report> createPatient(@RequestBody Optional<Report> report,
 			@RequestHeader String authentication) {
-		if (authentication.contentEquals("bearer")) {
+		if (authentication.contentEquals(key) ) {
 			if (report.isEmpty()) {
 				log.info("No request body");
 				return ResponseEntity.badRequest().build();
@@ -67,29 +69,19 @@ public class ReportRestcontroller {
 				log.info("Creating new patient");
 				Report newreport = report.get();
 
-				// Validator validator =
-				// Validation.buildDefaultValidatorFactory().getValidator();
-				// Set<ConstraintViolation<Patient>> violations =
-				// validator.validate(newPatient);
+				String savedReportId = UUID.randomUUID().toString();
+				newreport.setId(savedReportId);
+				Date issueNow = new Date();
+				LocalDate dob = LocalDate.of(2009, 9, 19);
+				issueNow.setTime(System.currentTimeMillis());
+				newreport.setDate(issueNow);
 
-				if (/* violations.size()>0 */report.isEmpty()) {
-					log.info("Bad request, constraint violations: "/* +violations */);
-					return ResponseEntity.badRequest().build();
-				} else {
+				URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/report")
+						.buildAndExpand("?patientId=" + newreport.getPatientId()).toUri();
+				log.info("Loading new report " + newreport.getId() + " for patient " + newreport.getPatientId());
+				reportService.saveReport(newreport);
+				return ResponseEntity.created(location).body(newreport);
 
-					String savedReportId = UUID.randomUUID().toString();
-					newreport.setId(savedReportId);
-					Date issueNow = new Date();
-					LocalDate dob = LocalDate.of(2009, 9, 19);
-					issueNow.setTime(System.currentTimeMillis());
-					newreport.setDate(issueNow);
-
-					URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/report")
-							.buildAndExpand("?patientId=" + newreport.getPatientId()).toUri();
-					log.info("Loading new report " + newreport.getId() + " for patient " + newreport.getPatientId());
-					reportService.saveReport(newreport);
-					return ResponseEntity.created(location).body(newreport);
-				}
 			}
 
 		} else {
@@ -102,7 +94,7 @@ public class ReportRestcontroller {
 	public ResponseEntity<Report> updateReport(@RequestParam Integer patientId, @RequestBody Optional<Report> report,
 			@RequestHeader String authentication) {
 
-		if (authentication.contentEquals("bearer")) {
+		if (authentication.contentEquals(key)) {
 			if (report.isEmpty()) {
 				log.info("No request body");
 				return ResponseEntity.badRequest().build();
@@ -144,8 +136,8 @@ public class ReportRestcontroller {
 	@DeleteMapping("/report")
 	public ResponseEntity<Report> deleteReport(@RequestBody Report report, @RequestParam Integer patientId,
 			@RequestHeader String authentication) {
-	
-		if (authentication.contentEquals("bearer")) {
+
+		if (authentication.contentEquals(key)) {
 			if (report.getComment().contentEquals("deletePatient") && report.getId().contentEquals("deleteAll")) {
 				log.info("Deleting all Patient " + patientId + " report");
 				if (reportService.findReportByPatientId(patientId).get(0).getComment() == "Not_Registered") {

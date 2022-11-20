@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Document(collection = "reports")
-public class Report {
+public class Report implements Cloneable{
 
 	//@Indexed(unique = true)
 	private String id;//string of user Id for instance
@@ -41,10 +41,33 @@ public class Report {
 		this.comment = "Not_Registered";
 	}
 	
+	public void setDate( Date date) {
+		this.date = (Date)date.clone();
+	}
+	public Date getDate() {
+		if(this.date != null) {
+		return (Date) this.date.clone();
+		}
+		return null;
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("Report[id=%s, patientId='%s', issueDate='%s', diabeteStatus='%s', comment='%s']",
 		        id, patientId,/* family, given,*/ date, diabeteStatus, comment);
+	}
+	
+	public Object clone() {
+		Report copy = null;
+		try {
+			copy = (Report)super.clone();
+		}catch(CloneNotSupportedException c) {
+			c.printStackTrace();
+		}
+		if(this.date != null) {
+			copy.date = (Date)this.date.clone();
+		}
+		return copy;
 	}
 	
 }

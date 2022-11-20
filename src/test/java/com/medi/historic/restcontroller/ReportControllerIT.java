@@ -1,5 +1,5 @@
 package com.medi.historic.restcontroller;
-
+/*
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -236,4 +236,4 @@ public class ReportControllerIT {
 		
 	}
 
-}
+}*/
