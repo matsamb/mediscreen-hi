@@ -21,23 +21,15 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Document(collection = "reports")
-public class Report implements Cloneable{
+public class ReportDTO implements Cloneable{
 
-	//@Indexed(unique = true)
-	private String id;//string of user Id for instance
-	//@Transient
+	private String id;
 	private Integer patientId;
-	//private String family;
-	//private String given;
-	//private LocalDate dob;
-	//S@Field("datetime")
 	private Date date;
-//	private DiabeteStatusEnum diabeteStatus;
 	private String comment;
 	
 
-	public Report(String string) {		
+	public ReportDTO(String string) {		
 		this.comment = "Not_Registered";
 	}
 	
@@ -54,13 +46,13 @@ public class Report implements Cloneable{
 	@Override
 	public String toString() {
 		return String.format("Report[id=%s, patientId='%s', issueDate='%s', comment='%s']",
-		        id, patientId,/* family, given,*/ date, /*diabeteStatus, */comment);
+		        id, patientId,/* family, given,*/ date, comment);
 	}
 	
 	public Object clone() {
-		Report copy = null;
+		ReportDTO copy = null;
 		try {
-			copy = (Report)super.clone();
+			copy = (ReportDTO)super.clone();
 		}catch(CloneNotSupportedException c) {
 			c.printStackTrace();
 		}

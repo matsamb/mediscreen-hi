@@ -1,5 +1,5 @@
 package com.medi.historic.diabetestatus;
-
+/*
 public enum DiabeteStatusEnum {
 
 	NONE,
@@ -8,3 +8,4 @@ public enum DiabeteStatusEnum {
 	EARLY_ONSET
 
 }
+*/
