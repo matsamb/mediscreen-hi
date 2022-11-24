@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.P
 import org.springframework.stereotype.Service;
 
 import com.medi.historic.entity.Report;
+import com.medi.historic.entity.ReportDTO;
 import com.medi.historic.repository.ReportRepository;
 
 import lombok.extern.log4j.Log4j2;
@@ -24,51 +25,49 @@ public class ReportService {
 		this.reportRepository = reportRepository;
 	}
 
-	public List<Report> findReportByPatientId(Integer patientId) {
+	public List<ReportDTO> findReportByPatientId(Integer patientId) {
 		log.info("findReportByPatientId");
-		List<Report> idReportList = new ArrayList<>();
+		List<ReportDTO> idReportList = new ArrayList<>();
+		ReportDTO copyDTO = new ReportDTO();
 		if (reportRepository.findByPatientId(patientId).size() > 0) {
-			idReportList.add(new Report("Not_Registered"));
+			// idReportList.add(new ReportDTO("Not_Registered"));
 			for (Report r : reportRepository.findByPatientId(patientId)) {
-				log.debug(r+"r Id - patientId"+patientId);
+				log.debug(r + "r Id - patientId" + patientId);
 				if (r.getPatientId().equals(patientId)) {
 					log.debug("if for equality");
-					idReportList.add(r);
+					copyDTO.setComment(r.getComment());
+					copyDTO.setDate(r.getDate());
+					copyDTO.setId(r.getId());
+					copyDTO.setPatientId(r.getPatientId());
+					idReportList.add(copyDTO);
 				}
 			}
-			if(idReportList.size() > 1) {
-				idReportList.remove(0);
-				return idReportList;
-			}
-			
 			return idReportList;
 		} else {
-			idReportList.add(new Report("Not_Registered"));
+			idReportList.add(new ReportDTO("Not_Registered"));
 			return idReportList;
 		}
 	}
 
-	public String saveReport(Report newreport) {
+	public void saveReport(Report newreport) {
 		log.info("saveReport");
 		reportRepository.save(newreport);
-		log.info(reportRepository.findByPatientId(newreport.getPatientId()).size());
-		for (Report r : reportRepository.findByPatientId(newreport.getPatientId())) {
-			if (r.getDate() == newreport.getDate()) {
-				log.info(r+" "+newreport);
-				return r.getId();
-			}
-		}
-		return "Not_Registered";
 	}
 
-	public void deleteReport(Report report) {
+	public void deleteReport(ReportDTO reportDTO) {
 		log.info("deleteReport");
+		Report report = new Report();
+		report.setComment(reportDTO.getComment());
+		report.setDate(reportDTO.getDate());
+		report.setId(reportDTO.getId());
+		report.setPatientId(reportDTO.getPatientId());
 		reportRepository.delete(report);
 	}
 
-	public void deleteAll(List<Report> reports) {
+	public void deleteAll(Integer patientId) {
 		log.info("deleteAllReport");
-		reportRepository.deleteAll(reports);		
+		List<Report> list = reportRepository.findByPatientId(patientId);
+		reportRepository.deleteAll(list);
 	}
 
 }

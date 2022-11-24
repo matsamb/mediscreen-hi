@@ -41,7 +41,7 @@ public class Report implements Cloneable{
 		this.comment = "Not_Registered";
 	}
 	
-	public void setDate( Date date) {
+	public void setDate(Date date) {
 		this.date = (Date)date.clone();
 	}
 	public Date getDate() {

@@ -1,4 +1,4 @@
-package com.medi.historic.entity;
+/*package com.medi.historic.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,4 +11,4 @@ public class Token {
 	private LocalDateTime endTime;
 	private String token;
 	
-}
+}*/
