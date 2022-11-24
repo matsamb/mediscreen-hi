@@ -36,7 +36,7 @@ public class ReportService {
 					copyDTO.setDate(r.getDate());
 					copyDTO.setId(r.getId());
 					copyDTO.setPatientId(r.getPatientId());
-					idReportList.add(copyDTO);
+					idReportList.add((ReportDTO)copyDTO.clone());
 				}
 			}
 			return idReportList;
@@ -47,7 +47,7 @@ public class ReportService {
 	}
 
 	public void saveReport(Report newreport) {
-		log.info("saveReport");
+		log.info("saveReport: "+newreport);
 		reportRepository.save(newreport);
 	}
 

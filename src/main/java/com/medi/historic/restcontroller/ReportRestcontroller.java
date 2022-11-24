@@ -49,7 +49,7 @@ public class ReportRestcontroller {
 	}
 
 	@PostMapping("/report/add")
-	public ResponseEntity<ReportDTO> createPatient(@RequestBody Optional<ReportDTO> reportDTO) {
+	public ResponseEntity<ReportDTO> createReport(@RequestBody Optional<ReportDTO> reportDTO) {
 
 		if (reportDTO.isEmpty()) {
 			log.info("No request body");
@@ -57,7 +57,8 @@ public class ReportRestcontroller {
 		} else {
 			log.info("Creating new patient: "+reportDTO);
 			ReportDTO newreportDTO = reportDTO.get();
-			Report newreport = new Report(newreportDTO.getComment());
+			Report newreport = new Report();
+			newreport.setComment(newreportDTO.getComment());
 			newreport.setDate(newreportDTO.getDate());
 			newreport.setPatientId(newreportDTO.getPatientId());
 			String savedReportId = UUID.randomUUID().toString();
@@ -85,9 +86,12 @@ public class ReportRestcontroller {
 			log.info("No request body");
 			return ResponseEntity.badRequest().build();
 		} else {
-			log.info("Updating report");
+			log.info("Updating report: "+reportDTO);
 			ReportDTO newreportDTO = reportDTO.get();
-			Report newReport = new Report(newreportDTO.getComment());
+			log.info("Updating report: "+newreportDTO);
+
+			Report newReport = new Report();
+			newReport.setComment(newreportDTO.getComment());
 			newReport.setDate(newreportDTO.getDate());
 			newReport.setPatientId(newreportDTO.getPatientId());
 			newReport.setId(newreportDTO.getId());
@@ -115,12 +119,12 @@ public class ReportRestcontroller {
 					if (r.getId().contentEquals(report.getId())){
 						log.info("Deleting patient " + patientId + " report " + report.getId());
 						reportService.deleteReport(report);
-						return ResponseEntity.noContent().build();
+					//	return ResponseEntity.noContent().build();
 					}
 					if (report.getId().contentEquals("deleteAll")) {
 						log.info("DeletingAll patient " + patientId + " report " + report.getId());
 						reportService.deleteReport(r);
-						return ResponseEntity.noContent().build();
+						//return ResponseEntity.noContent().build();
 					}
 				}
 				log.info("Report " + report.getId() + " not registered");

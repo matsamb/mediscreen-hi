@@ -70,7 +70,7 @@ public class ReportControllerIT {
 	}
 
 	@Test
-	public void givenAListOfRegisteredReport_whenDeleteReport_thenItShouldReturnNoContent() throws Exception {
+	public void givenAListOfRegisteredReport_whenDeleteReport_thenItShouldReturnNotFound() throws Exception {
 
 		ReportDTO report = new ReportDTO("yeyo");
 		report.setDate(Date.valueOf("1689-09-14"));
@@ -81,12 +81,12 @@ public class ReportControllerIT {
 		mockMvc.perform(delete("/report") // .header("Authentication", "bearer")
 				.param("patientId", "1").contentType(MediaType.APPLICATION_JSON)
 				.content("{\"id\":\"1\", \"patientId\":1, \"date\":\"1689-09-14\", \"comment\":\"yeyo\"}")
-				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
+				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
 
 	}
 	
 	@Test
-	public void given2AListOfRegisteredReport_whenDeleteReport_thenItShouldReturnNoContent() throws Exception {
+	public void given2AListOfRegisteredReport_whenDeleteReport_thenItShouldReturnNotFound() throws Exception {
 
 		ReportDTO report = new ReportDTO("yeyo");
 		report.setDate(Date.valueOf("1689-09-14"));
@@ -97,7 +97,7 @@ public class ReportControllerIT {
 		mockMvc.perform(delete("/report") // .header("Authentication", "bearer")
 				.param("patientId", "1").contentType(MediaType.APPLICATION_JSON)
 				.content("{\"id\":\"deleteAll\", \"patientId\":1, \"date\":\"1689-09-14\", \"comment\":\"yeyo\"}")
-				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
+				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
 
 	}
 
