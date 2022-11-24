@@ -1,11 +1,9 @@
 package com.medi.historic.service;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.medi.historic.entity.Report;
@@ -30,7 +28,6 @@ public class ReportService {
 		List<ReportDTO> idReportList = new ArrayList<>();
 		ReportDTO copyDTO = new ReportDTO();
 		if (reportRepository.findByPatientId(patientId).size() > 0) {
-			// idReportList.add(new ReportDTO("Not_Registered"));
 			for (Report r : reportRepository.findByPatientId(patientId)) {
 				log.debug(r + "r Id - patientId" + patientId);
 				if (r.getPatientId().equals(patientId)) {
