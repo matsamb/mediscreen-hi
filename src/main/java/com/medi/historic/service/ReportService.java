@@ -37,7 +37,7 @@ public class ReportService {
 					copyDTO.setId(r.getId());
 					copyDTO.setPatientId(r.getPatientId());
 					idReportList.add((ReportDTO)copyDTO.clone());
-				}
+				}  
 			}
 			return idReportList;
 		} else {

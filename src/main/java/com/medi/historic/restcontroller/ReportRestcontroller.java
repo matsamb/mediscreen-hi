@@ -119,12 +119,10 @@ public class ReportRestcontroller {
 					if (r.getId().contentEquals(report.getId())){
 						log.info("Deleting patient " + patientId + " report " + report.getId());
 						reportService.deleteReport(report);
-					//	return ResponseEntity.noContent().build();
 					}
 					if (report.getId().contentEquals("deleteAll")) {
 						log.info("DeletingAll patient " + patientId + " report " + report.getId());
 						reportService.deleteReport(r);
-						//return ResponseEntity.noContent().build();
 					}
 				}
 				log.info("Report " + report.getId() + " not registered");
